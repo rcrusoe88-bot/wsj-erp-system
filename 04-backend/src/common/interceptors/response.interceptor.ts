@@ -1,0 +1,29 @@
+import {
+  CallHandler,
+  ExecutionContext,
+  Injectable,
+  NestInterceptor,
+} from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+@Injectable()
+export class ResponseInterceptor<T>
+  implements NestInterceptor<T, { success: true; message: string; data: T }>
+{
+  constructor(private readonly reflector: Reflector) {}
+
+  intercept(
+    _context: ExecutionContext,
+    next: CallHandler<T>,
+  ): Observable<{ success: true; message: string; data: T }> {
+    return next.handle().pipe(
+      map((data) => ({
+        success: true,
+        message: 'ok',
+        data,
+      })),
+    );
+  }
+}
