@@ -95,7 +95,9 @@
       "Bash(npx tsc *)",
       "Bash(node -e \"const m = require\\('./dist/app.module'\\); console.log\\('AppModule loaded:', typeof m.AppModule\\)\")",
       "Bash(timeout 8 node dist/main.js)",
-      "Bash(timeout 6 node dist/main.js)"
+      "Bash(timeout 6 node dist/main.js)",
+      "Skill(playwright-cli)",
+      "Skill(playwright-cli:*)"
     ],
     "additionalDirectories": [
       "C:\\tmp\\materia-erp-ui-reclone",
