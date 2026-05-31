@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Table, Button, Tag, Space, Empty, Modal, message } from 'antd';
+import { Card, Table, Button, Tag, Space, Empty, Modal, message, Form, Input, Select } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { api } from '@/services/api';
 
@@ -18,6 +18,9 @@ const UsersPage: React.FC = () => {
   const [data, setData] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [createVisible, setCreateVisible] = useState(false);
+  const [createLoading, setCreateLoading] = useState(false);
+  const [form] = Form.useForm();
 
   const fetchData = async () => {
     setLoading(true);
@@ -33,6 +36,23 @@ const UsersPage: React.FC = () => {
   };
 
   useEffect(() => { fetchData(); }, []);
+
+  const handleCreate = async () => {
+    try {
+      const values = await form.validateFields();
+      setCreateLoading(true);
+      await api.post('/users', values);
+      message.success('用户创建成功');
+      setCreateVisible(false);
+      form.resetFields();
+      fetchData();
+    } catch (err: any) {
+      if (err.errorFields) return;
+      message.error(err.message || '创建失败');
+    } finally {
+      setCreateLoading(false);
+    }
+  };
 
   const handleToggleStatus = async (user: User) => {
     const newStatus = user.status === 'active' ? 'inactive' : 'active';
@@ -78,13 +98,49 @@ const UsersPage: React.FC = () => {
 
   return (
     <div>
-      <Card>
+      <Card
+        title="用户管理"
+        extra={
+          <Button type="primary" onClick={() => setCreateVisible(true)}>
+            新增用户
+          </Button>
+        }
+      >
         <Table<User>
           rowKey="id" columns={columns} dataSource={data} loading={loading} scroll={{ x: 700 }}
           pagination={{ showSizeChanger: true, showTotal: (total) => `共 ${total} 条` }}
           locale={{ emptyText: <Empty description={error || '暂无用户数据'}><Button type="primary" onClick={fetchData}>刷新</Button></Empty> }}
         />
       </Card>
+
+      <Modal
+        title="新增用户"
+        open={createVisible}
+        onCancel={() => { setCreateVisible(false); form.resetFields(); }}
+        onOk={handleCreate}
+        confirmLoading={createLoading}
+        okText="创建"
+        cancelText="取消"
+      >
+        <Form form={form} layout="vertical">
+          <Form.Item name="username" label="用户名" rules={[{ required: true, message: '请输入用户名' }]}>
+            <Input placeholder="请输入用户名" />
+          </Form.Item>
+          <Form.Item name="password" label="密码" rules={[{ required: true, min: 6, message: '密码至少6位' }]}>
+            <Input.Password placeholder="请输入密码（至少6位）" />
+          </Form.Item>
+          <Form.Item name="fullName" label="姓名" rules={[{ required: true, message: '请输入姓名' }]}>
+            <Input placeholder="请输入姓名" />
+          </Form.Item>
+          <Form.Item name="role" label="角色" rules={[{ required: true, message: '请选择角色' }]}>
+            <Select placeholder="请选择角色">
+              <Select.Option value="admin">管理员</Select.Option>
+              <Select.Option value="reviewer">审核员</Select.Option>
+              <Select.Option value="operator">操作员</Select.Option>
+            </Select>
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };

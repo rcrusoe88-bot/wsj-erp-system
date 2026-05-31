@@ -1,0 +1,17 @@
+FROM node:18-alpine AS builder
+WORKDIR /app
+COPY 04-backend/package*.json ./
+RUN npm ci --only=production && cp -R node_modules /prod_modules
+RUN npm ci
+COPY 04-backend/ .
+RUN npm run build
+RUN npm run prisma:generate
+
+FROM node:18-alpine
+WORKDIR /app
+COPY --from=builder /prod_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/package*.json ./
+EXPOSE 3000
+CMD ["node", "dist/main"]

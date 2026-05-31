@@ -53,5 +53,7 @@ mRNA/LNP 生产物料管理系统（MVP）。管理原辅料、脂质、中间�
 - Step 1 ✅ PO Agent — 需求文档（PRD、用户故事、数据字典、术语表、流程图）
 - Step 2 ✅ Design Agent — 页面设计（页面地图、页面规格、关键任务流程）
 - Step 3 ✅ DBA Agent — 数据库设计（数据模型、ER关系、约束索引、Prisma Schema + 迁移）
-- Step 4 ✅ Backend Agent — 后端开发（NestJS 10个模块骨架完成，待联调）
-- Step 5 🔄 Frontend Agent — 前端开发（当前阶段）
+- Step 4 ✅ Backend Agent — 后端开发（NestJS 8个模块，API 运行中）
+- Step 5 ✅ Frontend Agent — 前端开发（10个P0页面，端到端联调通过）
+- Step 6 ✅ QA Agent — 测试（6套件24个API集成测试全部通过）
+- Step 7 ✅ DevOps Agent — 部署（Docker Compose + Nginx + 原生部署脚本）

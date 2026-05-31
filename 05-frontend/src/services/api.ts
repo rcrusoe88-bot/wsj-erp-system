@@ -45,13 +45,14 @@ async function request<T = any>(url: string, options: RequestOptions = {}): Prom
     throw new ApiError('未授权，请重新登录', 401);
   }
 
-  const data = await response.json();
+  const json = await response.json();
 
   if (!response.ok) {
-    throw new ApiError(data.message || '请求失败', response.status);
+    throw new ApiError(json.message || '请求失败', response.status);
   }
 
-  return data;
+  // 后端统一包裹 { success, message, data }，自动解包 data 字段
+  return json?.data !== undefined ? json.data : json;
 }
 
 export const api = {

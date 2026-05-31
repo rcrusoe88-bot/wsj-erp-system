@@ -19,8 +19,8 @@ const LoginPage: React.FC = () => {
   const onFinish = async (values: LoginForm) => {
     setLoading(true);
     try {
-      const res = await api.post<{ access_token: string }>('/auth/login', values);
-      setToken(res.access_token);
+      const res = await api.post<{ accessToken: string }>('/auth/login', values);
+      setToken(res.accessToken);
 
       const user = await api.get<UserInfo>('/auth/me');
       setCurrentUser(user);

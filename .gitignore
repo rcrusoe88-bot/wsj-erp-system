@@ -5,4 +5,7 @@ dist/
 *.log
 .DS_Store
 Thumbs.db
-src/.umi/
+**/src/.umi/
+**/src/.umi-production/
+**/.env.production
+**/.env.local
