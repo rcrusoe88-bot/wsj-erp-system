@@ -1,29 +1,67 @@
-# materia-erp-ui
+# Materia ERP 物料管理系统
 
-前端独立仓库，用于承载 MATERIA ERP 的交互式 HTML 原型与后续界面模块。
+mRNA/LNP 生产物料管理系统（MVP）。管理原辅料、脂质、中间体、成品、耗材、设备的出入库、库存、批次追溯与效期管理。
 
-## 当前内容
+## 技术栈
 
-- `erp-materials-ledger-module.html`：物料台账模块交互 Demo
+- **前端**：React + Ant Design（Umi 框架）
+- **后端**：NestJS + TypeScript + Prisma
+- **数据库**：PostgreSQL 15+
+- **部署**：Docker Compose 单机
 
-## 使用方式
+## 项目结构
 
-直接在浏览器中打开 `erp-materials-ledger-module.html`，或使用本地静态服务器预览。
+```
+01-requirements/   ← PRD、用户故事、数据字典
+02-design/         ← 页面原型、组件设计
+03-database/       ← DDL、迁移、ER图、Prisma Schema
+04-backend/        ← NestJS 源码（8个模块）
+05-frontend/       ← React 源码（10个P0页面）
+06-tests/          ← Jest API 集成测试（6套件24用例）
+07-deploy/         ← Docker、Nginx、部署脚本
+```
 
-示例：
+## 快速启动
+
+### 后端
 
 ```bash
-python -m http.server 8000
+cd 04-backend
+cp .env.example .env  # 配置数据库连接
+npm install
+npx prisma migrate dev
+npm run start:dev
 ```
 
-然后访问：
+### 前端
 
-```text
-http://127.0.0.1:8000/erp-materials-ledger-module.html
+```bash
+cd 05-frontend
+npm install
+npm start
 ```
 
-## 说明
+### Docker Compose 一键部署
 
-- 当前仓库仅放前端原型 / UI Demo
-- 后端接口、数据库与部署将拆分到独立仓库
-- 现阶段以模块化迭代方式推进，每次确认一个模块后再进入下一个模块
+```bash
+cd 07-deploy
+cp .env.example .env  # 配置环境变量
+docker-compose up -d
+```
+
+## 核心功能
+
+- 物料主数据管理（编码、分类、规格、供应商）
+- 仓库与库位管理
+- 出入库流程（创建 → 审核 → 执行）
+- 库存实时查询与预警
+- 批次追溯与效期管理（≤30天预警，过期锁定）
+- 用户与角色权限（管理员/审核员/操作员）
+
+## 环境变量
+
+参考 `07-deploy/.env.example`，生产环境请勿提交 `.env.production`。
+
+## License
+
+MIT
