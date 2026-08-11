@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api/pin/?username=rcrusoe88-bot&repo=wsj-erp-system&theme=vue&show_owner=true" alt="wsj-erp-system 仓库数据">
+  <img src="https://github-readme-stats-eight-theta.vercel.app/api/pin/?username=rcrusoe88-bot&repo=wsj-erp-system&theme=vue&show_owner=true" alt="wsj-erp-system 仓库数据">
 </p>
 
 mRNA/LNP 生产物料管理系统（MVP）。管理原辅料、脂质、中间体、成品、耗材、设备的出入库、库存、批次追溯与效期管理。
@@ -82,6 +82,6 @@ MIT
 ## 📊 作者 GitHub 数据
 
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=rcrusoe88-bot&show_icons=true&theme=vue" alt="rcrusoe88-bot 的 GitHub 统计">
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=rcrusoe88-bot&layout=compact&theme=vue" alt="rcrusoe88-bot 的常用语言">
+  <img src="https://github-readme-stats-eight-theta.vercel.app/api?username=rcrusoe88-bot&show_icons=true&theme=vue" alt="rcrusoe88-bot 的 GitHub 统计">
+  <img src="https://github-readme-stats-eight-theta.vercel.app/api/top-langs/?username=rcrusoe88-bot&layout=compact&theme=vue" alt="rcrusoe88-bot 的常用语言">
 </p>
