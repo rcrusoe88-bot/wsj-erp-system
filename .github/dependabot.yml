@@ -1,0 +1,14 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: "/04-backend"
+    schedule:
+      interval: monthly
+  - package-ecosystem: npm
+    directory: "/05-frontend"
+    schedule:
+      interval: monthly
+  - package-ecosystem: npm
+    directory: "/06-tests"
+    schedule:
+      interval: monthly
