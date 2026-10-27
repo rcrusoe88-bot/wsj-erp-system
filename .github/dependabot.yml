@@ -3,12 +3,63 @@ updates:
   - package-ecosystem: npm
     directory: "/04-backend"
     schedule:
-      interval: monthly
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      nestjs:
+        patterns:
+          - "@nestjs/*"
+      typescript:
+        patterns:
+          - "typescript"
+          - "ts-*"
+          - "@types/*"
+      prisma:
+        patterns:
+          - "prisma"
+          - "@prisma/*"
+      security:
+        applies-to: security-updates
+        patterns:
+          - "*"
   - package-ecosystem: npm
     directory: "/05-frontend"
     schedule:
-      interval: monthly
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      umi:
+        patterns:
+          - "umi"
+          - "@umijs/*"
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+      typescript:
+        patterns:
+          - "typescript"
+      security:
+        applies-to: security-updates
+        patterns:
+          - "*"
   - package-ecosystem: npm
     directory: "/06-tests"
     schedule:
-      interval: monthly
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      jest:
+        patterns:
+          - "jest"
+          - "ts-jest"
+          - "@types/jest"
+      typescript:
+        patterns:
+          - "typescript"
+      security:
+        applies-to: security-updates
+        patterns:
+          - "*"
