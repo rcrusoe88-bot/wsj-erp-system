@@ -4,8 +4,16 @@ on:
   push:
   pull_request:
 
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
 jobs:
   backend:
+    name: backend build
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -15,10 +23,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - run: npm install
+          cache: npm
+          cache-dependency-path: 04-backend/package-lock.json
+      - run: npm ci
       - run: npm run build
 
   frontend:
+    name: frontend build
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -28,18 +39,83 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - run: npm install
+          cache: npm
+          cache-dependency-path: 05-frontend/package-lock.json
+      - run: npm ci
       - run: npm run build
 
   tests:
+    name: integration tests
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: 06-tests
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: materia_erp
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d materia_erp"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/materia_erp?schema=public
+      JWT_SECRET: ci-test-secret
+      PORT: "3000"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - run: npm install
-      - run: npm test
+          cache: npm
+          cache-dependency-path: 06-tests/package-lock.json
+
+      - name: Install backend dependencies
+        working-directory: 04-backend
+        run: npm ci
+
+      - name: Build backend
+        working-directory: 04-backend
+        run: npm run build
+
+      - name: Apply database migrations
+        working-directory: 04-backend
+        run: npx prisma migrate deploy
+
+      - name: Seed database
+        working-directory: 04-backend
+        run: npx prisma db seed
+
+      - name: Start backend
+        working-directory: 04-backend
+        run: |
+          node dist/main &
+          echo $! > /tmp/backend.pid
+
+      - name: Wait for backend health
+        run: |
+          for i in $(seq 1 30); do
+            if curl -sf http://127.0.0.1:3000/api/health > /dev/null; then
+              echo "Backend ready after ${i}s"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "Backend did not become healthy in time"
+          exit 1
+
+      - name: Run tests
+        run: npm ci && npm test
+
+      - name: Stop backend
+        if: always()
+        run: |
+          if [ -f /tmp/backend.pid ]; then
+            kill "$(cat /tmp/backend.pid)" 2>/dev/null || true
+          fi
