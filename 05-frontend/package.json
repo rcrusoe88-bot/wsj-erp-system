@@ -9,7 +9,7 @@
     "postinstall": "umi setup"
   },
   "dependencies": {
-    "umi": "^4.4.0",
+    "umi": "^4.7.27",
     "@umijs/plugins": "^4.7.27",
     "antd": "^5.22.0",
     "@ant-design/pro-components": "^2.8.0",
