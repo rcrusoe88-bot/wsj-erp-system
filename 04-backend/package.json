@@ -40,7 +40,7 @@
     "@types/express": "^5.0.1",
     "@types/node": "^22.15.29",
     "@types/passport-jwt": "^4.0.1",
-    "prisma": "^5.22.0",
+    "prisma": "^7.10.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },
