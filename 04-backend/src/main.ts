@@ -6,6 +6,7 @@ import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 
 async function bootstrap() {
+  throw new Error("probe: deliberate build break")
   const app = await NestFactory.create(AppModule);
   const reflector = app.get(Reflector);
 
